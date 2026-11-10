@@ -1,0 +1,39 @@
+/* Small adaptations for semantic React markup; the original design tokens are retained. */
+.answer-content > p { margin-bottom: 16px; }
+.answer-actions [aria-pressed="true"] { color: #65834a; background: #eff4e9; }
+.new-chat { justify-content: flex-start; }
+.sidebar-thread-actions .icon-btn { flex-shrink: 0; }
+.sidebar [inert] { pointer-events: none; }
+.upload-drop { display: block; }
+.modal-body form .field + .field { margin-top: 16px; }
+.modal-body form .field:last-child { margin-bottom: 0; }
+.chat-page > .composer-wrap { width: 100%; }
+
+/* Sidebar contrast revision — 1 November 2026. */
+.sidebar { border-right: 1px solid #302b26; }
+.sidebar-history { border-top: 1px solid #302b26; }
+.history-section-heading { padding: 0 8px; margin-bottom: 14px; }
+.history-section-heading h2 { font-size: 13px; font-weight: 600; color: #292521; }
+.history-section-heading > span { background: #302b26; color: #fff; font-size: 11px; font-weight: 600; min-width: 24px; text-align: center; }
+.sidebar-search { min-height: 42px; border-color: #6b6158; background: #fff; margin-bottom: 14px; }
+.sidebar-search .icon { color: #4a4139; stroke-width: 1.9; }
+.sidebar-search input { font-size: 12px; color: #292521; }
+.sidebar-search input::placeholder { color: #63594f; }
+.sidebar-search:focus-within { border-color: #292521; box-shadow: 0 0 0 2px #302b2614; }
+.sidebar-history-list { padding: 2px 2px 14px; scrollbar-color: #776b60 transparent; }
+.sidebar-thread { min-height: 56px; margin-bottom: 8px; border: 1px solid #d0c4b7; border-left: 3px solid transparent; background: #fffcf7; border-radius: 8px; }
+.sidebar-thread-link { align-items: flex-start; gap: 8px; padding: 11px 8px; font-size: 12px; line-height: 1.6; font-weight: 500; color: #292521; }
+.sidebar-thread-link > .icon { margin-top: 2px; color: #4a4139; stroke-width: 1.9; }
+.sidebar-thread-link > span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; white-space: normal; overflow-wrap: anywhere; overflow: hidden; }
+.sidebar-thread:hover, .sidebar-thread:focus-within { border-color: #776b60; background: #eee5da; }
+.sidebar-thread.selected { border-color: #6b6158; border-left-color: #211d19; background: #eee1d2; }
+.sidebar-thread.selected .sidebar-thread-link { font-weight: 600; color: #211d19; }
+.sidebar-thread.selected .sidebar-thread-link > .icon { color: #211d19; }
+.sidebar-thread-actions .icon-btn { color: #443a32; }
+.sidebar-thread-actions .icon-btn:hover { background: #fff; color: #211d19; }
+.sidebar-history-empty { color: #51483f; font-size: 12px; }
+.sidebar-foot { border-top: 1px solid #302b26; }
+.sidebar .account-label { color: #292521; }
+.sidebar .account-sub { color: #63594f; }
+
+@media print { #overlay-root { display: none !important; } }

@@ -1,0 +1,41 @@
+.integration-demo{max-width:900px;margin:0 auto;padding:32px 24px 60px;color:#382b29}
+.integration-demo__eyebrow{font-size:12px;letter-spacing:1.5px;font-weight:600;color:#a62b31}
+.integration-demo h1{font-family:Lora,serif;font-size:32px;margin:12px 0 18px}
+.integration-demo p{line-height:1.65;margin:10px 0 16px}
+.integration-demo form{margin:28px 0 20px}
+.integration-demo label{display:block;font-weight:600;margin-bottom:10px}
+.integration-demo textarea{display:block;width:100%;box-sizing:border-box;resize:vertical;min-height:110px;padding:14px;border:1px solid #a39587;border-radius:8px;font:inherit;background:#fffcf7;color:inherit}
+.integration-demo button{margin:12px 0 0;padding:11px 18px;border:1px solid #a62b31;border-radius:7px;font:inherit;font-weight:600;background:#a62b31;color:#fff;cursor:pointer}
+.integration-demo button:disabled{opacity:.55;cursor:wait}
+.integration-demo :focus-visible{outline:3px solid #bd9135;outline-offset:3px}
+.integration-demo__mode{font-size:13px;font-weight:600;padding:12px 16px;background:#f4ead6;border-left:3px solid #bd9135}
+.integration-demo__error{padding:12px 16px;color:#8d242b;background:#fff0ed;border-left:3px solid #a62b31}
+.integration-demo__results{list-style:none;padding:0;margin:20px 0}
+.integration-demo__results li{padding:20px;border:1px solid #d6c9bc;border-radius:10px;background:#fffcf7;margin:14px 0}
+.integration-demo h2{font-size:19px;line-height:1.4;margin:0 0 12px}
+.integration-demo small{display:block;overflow-wrap:anywhere}
+.integration-demo__original{white-space:pre-wrap;overflow-wrap:anywhere}
+.integration-demo__source a{color:#8d242b;text-decoration:underline}
+.integration-demo__source {
+  box-sizing: border-box;
+  width: min(720px, calc(100% - 32px));
+  max-height: min(640px, calc(100dvh - 32px));
+  margin: auto;
+  padding: 20px;
+  overflow: auto;
+  color: inherit;
+  background: #fffcf7;
+  border: 1px solid #d6c9bc;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px #382b2940;
+}
+.integration-demo__source::backdrop { background: #241b1990; }
+.integration-demo__source-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.integration-demo__source-header h2 { margin: 6px 0; }
+.integration-demo__source-header button { margin: 0; flex-shrink: 0; }
+@media(max-width:600px){.integration-demo{padding:22px 16px 40px}.integration-demo h1{font-size:27px}.integration-demo textarea{font-size:16px}}

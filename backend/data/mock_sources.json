@@ -1,0 +1,34 @@
+[
+  {
+    "keywords": ["thử việc", "lương"],
+    "source": {
+      "unit_id": "mock-thu-viec",
+      "document_id": "mock-document",
+      "version_id": "mock-v1",
+      "title": "Mẫu kỹ thuật — chủ đề thử việc",
+      "article": null,
+      "clause": null,
+      "point": null,
+      "text": "ĐÂY LÀ DỮ LIỆU GIẢ LẬP để kiểm tra đường gọi React → API → nguồn. Đây không phải nội dung điều luật. Thứ Ba cần thay bằng nguyên văn và metadata được A kiểm tra, do phần tìm kiếm của B trả về.",
+      "page_from": null,
+      "page_to": null,
+      "source_url": null
+    }
+  },
+  {
+    "keywords": ["nghỉ việc", "hợp đồng"],
+    "source": {
+      "unit_id": "mock-hop-dong",
+      "document_id": "mock-document",
+      "version_id": "mock-v1",
+      "title": "Mẫu kỹ thuật — chủ đề hợp đồng",
+      "article": null,
+      "clause": null,
+      "point": null,
+      "text": "Bản ghi mẫu thứ hai để thử danh sách và mở chi tiết theo đúng unit_id. Chưa có căn cứ pháp luật thật trong bản ghi này.",
+      "page_from": null,
+      "page_to": null,
+      "source_url": null
+    }
+  }
+]

@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+/API_CHECK_RESULTS.json

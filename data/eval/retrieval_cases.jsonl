@@ -1,0 +1,12 @@
+{"id":"IN01","query":"Hợp đồng dưới một tháng có áp dụng thử việc không?","expected_article":24}
+{"id":"IN02","query":"Có thể ghi nội dung thử việc ngay trong hợp đồng lao động không?","expected_article":24}
+{"id":"IN03","query":"Thử việc bao nhiêu ngày?","expected_article":25}
+{"id":"IN04","query":"Một công việc có được thử việc hai lần không?","expected_article":25}
+{"id":"IN05","query":"Tiền lương thử việc","expected_article":26}
+{"id":"IN06","query":"Lúc thử việc được trả bao nhiêu phần trăm lương?","expected_article":26}
+{"id":"IN07","query":"Ai phải thông báo kết quả thử việc?","expected_article":27}
+{"id":"IN08","query":"Đang thử việc có được nghỉ mà không báo trước không?","expected_article":27}
+{"id":"OUT01","query":"Mật khẩu wifi","expected_article":null}
+{"id":"OUT02","query":"Đóng bảo hiểm xã hội trong thời gian thử việc?","expected_article":null}
+{"id":"OUT03","query":"Trợ cấp thất nghiệp trong thời gian thử việc tính thế nào?","expected_article":null}
+{"id":"OUT04","query":"Nghỉ phép năm khi đang thử việc có được trả lương không?","expected_article":null}

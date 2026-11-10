@@ -43,3 +43,24 @@ class SourceResponse(BaseModel):
     mode: Literal["mock", "b"]
     snapshot_id: str
     source: Source
+
+class AnswerRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    query: Query
+
+
+class AnswerResponse(BaseModel):
+    status: Literal["answered", "insufficient_evidence"]
+    answer: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+    citations: list[Source]
+    snapshot_id: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_citations(self):
+        if self.status == "answered" and not self.citations:
+            raise ValueError("An answered response requires at least one citation.")
+
+        if self.status == "insufficient_evidence" and self.citations:
+            raise ValueError("An insufficient-evidence response must have no citations.")
+
+        return self

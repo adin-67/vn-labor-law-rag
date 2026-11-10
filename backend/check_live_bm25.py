@@ -4,7 +4,7 @@ import json
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
-
+from argparse import ArgumentParser
 
 API = "http://127.0.0.1:8001"
 FRONTEND = "http://127.0.0.1:5173"
@@ -35,19 +35,25 @@ def check(condition, message):
     print(f"PASS | {message}")
 
 
-def main():
+def main(api_only=False):
     code, health, _ = request(f"{API}/health")
     check(code == 200 and health.get("retrieval_ready") is True and health.get("mode") == "b",
           "FastAPI chạy ở chế độ b, dùng BM25 thật")
     snapshot = health["snapshot_id"]
     check(request(f"{API}/docs")[0] == 200, "Trang Swagger phản hồi HTTP 200")
-    check(request(f"{FRONTEND}/")[0] == 200, "Trang React phản hồi HTTP 200")
+    if not api_only:
+        check(
+            request(f"{FRONTEND}/")[0] == 200,
+            "Trang React phản hồi HTTP 200",
+        )
 
     cases = (
         ("thỏa thuận nội dung thử việc trong hợp đồng lao động", "24", (11, 11)),
         ("thử việc bao nhiêu ngày", "25", (11, 12)),
         ("tiền lương thử việc", "26", (12, 12)),
         ("thông báo kết quả thử việc", "27", (12, 12)),
+        ("Công ty đặt tên giấy thỏa thuận khác, nhưng tôi vẫn được trả lương và chịu sự quản lý của công ty. Có được coi là hợp đồng lao động không?", "13", (7, 7)),
+        ("Hợp đồng lao động giao kết qua phương tiện điện tử có giá trị như hợp đồng bằng văn bản không?", "14", (7, 7)),
     )
     for query, article, pages in cases:
         code, result, _ = request(f"{API}/api/v1/search", body={"query": query, "top_k": 1})
@@ -84,7 +90,15 @@ def main():
 
 
 if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument(
+        "--api-only",
+        action="store_true",
+        help="Run the HTTP checks with only the API running.",
+    )
+    args = parser.parse_args()
+
     try:
-        main()
+        main(api_only=args.api_only)
     except (AssertionError, RuntimeError) as error:
         raise SystemExit(f"FAIL | {error}") from None

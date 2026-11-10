@@ -19,7 +19,7 @@ bm25 = module_from_spec(spec)
 spec.loader.exec_module(bm25)
 
 snapshot = bm25.CHUNKS_PATH.read_bytes()
-SNAPSHOT_ID = f"bm25-24-27-{sha256(snapshot).hexdigest()[:16]}"
+SNAPSHOT_ID = f"bm25-{sha256(snapshot).hexdigest()[:16]}"
 
 
 def source_from_chunk(chunk):

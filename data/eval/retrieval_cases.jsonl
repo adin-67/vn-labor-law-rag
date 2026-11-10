@@ -10,3 +10,6 @@
 {"id":"OUT02","query":"Đóng bảo hiểm xã hội trong thời gian thử việc?","expected_article":null}
 {"id":"OUT03","query":"Trợ cấp thất nghiệp trong thời gian thử việc tính thế nào?","expected_article":null}
 {"id":"OUT04","query":"Nghỉ phép năm khi đang thử việc có được trả lương không?","expected_article":null}
+{"id":"IN09","query":"Công ty đặt tên giấy thỏa thuận khác, nhưng tôi vẫn được trả lương và chịu sự quản lý của công ty. Có được coi là hợp đồng lao động không?","expected_article":13}
+{"id":"IN10","query":"Hợp đồng lao động giao kết qua phương tiện điện tử có giá trị như hợp đồng bằng văn bản không?","expected_article":14}
+{"id":"OUT05","query":"Tôi đã hết thử việc và đang làm theo hợp đồng có thời hạn. Nếu xin nghỉ thì phải báo trước bao nhiêu ngày?","expected_article":null}

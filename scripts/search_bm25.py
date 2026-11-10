@@ -9,7 +9,7 @@ CHUNKS_PATH = (
     Path(__file__).resolve().parents[1]
     / "data"
     / "processed"
-    / "45-2019-QH14-chunks-24-27.jsonl"
+    / "45-2019-QH14-chunks.jsonl"
 )
 
 

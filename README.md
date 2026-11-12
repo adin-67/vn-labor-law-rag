@@ -1,5 +1,7 @@
 # Vietnam Labor Law RAG
 
+Xem [hướng dẫn thử endpoint answer với Ollama](docs/answer-ollama.md) để chạy câu trả lời kèm nguồn bằng model local.
+
 Bản demo tìm kiếm bằng BM25 trên Điều 24–27 của Bộ luật Lao động số 45/2019/QH14.
 
 ## Chạy thử

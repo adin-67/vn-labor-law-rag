@@ -1,6 +1,10 @@
 """Kiểm tra FastAPI và Vite đang chạy trên localhost bằng dữ liệu BM25 của B."""
 
 import json
+import os
+from hashlib import sha256
+from importlib.util import module_from_spec, spec_from_file_location
+from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -36,10 +40,18 @@ def check(condition, message):
 
 
 def main(api_only=False):
+    repo = Path(os.environ.get("B_REPO_PATH") or Path(__file__).resolve().parents[1])
+    spec = spec_from_file_location("direct_bm25_check", repo / "scripts" / "search_bm25.py")
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Không nạp được BM25 trực tiếp để đối chiếu.")
+    direct = module_from_spec(spec)
+    spec.loader.exec_module(direct)
     code, health, _ = request(f"{API}/health")
     check(code == 200 and health.get("retrieval_ready") is True and health.get("mode") == "b",
           "FastAPI chạy ở chế độ b, dùng BM25 thật")
     snapshot = health["snapshot_id"]
+    expected_snapshot = f"bm25-{sha256(direct.CHUNKS_PATH.read_bytes()).hexdigest()[:16]}"
+    check(snapshot == expected_snapshot, "API và BM25 trực tiếp dùng cùng bộ dữ liệu")
     check(request(f"{API}/docs")[0] == 200, "Trang Swagger phản hồi HTTP 200")
     if not api_only:
         check(
@@ -62,6 +74,13 @@ def main(api_only=False):
               and result["results"][0]["article"] == article,
               f"Tìm '{query}' → Điều {article}, top_k = 1")
         row = result["results"][0]
+        direct_rows = direct.search_articles(query, top_k=1)
+        check(len(direct_rows) == 1
+              and row["article"] == str(direct_rows[0]["article_number"])
+              and row["text"] == direct_rows[0]["text"]
+              and (row["page_from"], row["page_to"]) ==
+                  (direct_rows[0]["pdf_page_start"], direct_rows[0]["pdf_page_end"]),
+              f"BM25 trực tiếp và API khớp Điều {article}, nội dung và trang")
         unit_id = quote(row["unit_id"], safe="")
         code, response, _ = request(f"{API}/api/v1/sources/{unit_id}")
         check(code == 200 and response.get("mode") == "b" and response.get("snapshot_id") == snapshot
@@ -69,7 +88,7 @@ def main(api_only=False):
               and row["text"].strip() and row["source_url"],
               f"Mở đúng Điều {article}, trang PDF {pages[0]}–{pages[1]}")
 
-    for query in ("xyzqxyzq", "tien luong thu viec"):
+    for query in ("xyzqxyzq", "tien luong thu viec", "Mật khẩu wifi"):
         code, result, _ = request(f"{API}/api/v1/search", body={"query": query})
         check(code == 200 and result.get("status") == "no_results" and result.get("results") == [],
               f"'{query}' trả danh sách rỗng")
@@ -100,5 +119,5 @@ if __name__ == "__main__":
 
     try:
         main(api_only=args.api_only)
-    except (AssertionError, RuntimeError) as error:
+    except (AssertionError, RuntimeError, OSError) as error:
         raise SystemExit(f"FAIL | {error}") from None

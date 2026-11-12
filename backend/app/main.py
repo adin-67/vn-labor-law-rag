@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from .answers import generate_answer
 
 from .retrieval import InvalidRetrievalData, RetrievalUnavailable, get_retriever
 from .schemas import (
@@ -102,13 +103,7 @@ def answer(body: AnswerRequest):
     candidates = checked_search(retriever, body.query, top_k=3)
 
     if candidates:
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "code": "answer_not_configured",
-                "message": "Bộ tạo câu trả lời chưa được cấu hình.",
-            },
-        )
+        return generate_answer(body.query, candidates, retriever.snapshot_id)
 
     return AnswerResponse(
         status="insufficient_evidence",

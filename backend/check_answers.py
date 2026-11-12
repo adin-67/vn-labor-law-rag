@@ -13,6 +13,7 @@ from app.answers import generate_answer, normalize_excerpt
 from app.main import answer
 from app.retrieval import get_retriever
 from app.schemas import AnswerRequest
+from check_answers_live import check_expected_content
 
 
 def model_response(body, *, done=True, done_reason="stop"):
@@ -252,6 +253,22 @@ class AnswerChecks(unittest.TestCase):
             ]) as model:
                 self.generate()
         self.assertEqual([call.kwargs["json"]["model"] for call in model.call_args_list], ["test-model", "review-model"])
+
+    def test_live_benchmark_catches_missing_wage_and_wrong_document_name(self):
+        failures = [
+            ("IN06", "Người lao động và người sử dụng lao động thỏa thuận tiền lương trong thời gian thử việc."),
+            ("IN06", "Theo Nghị định 45/2019/QH14, tiền lương thử việc ít nhất bằng 85% mức lương của công việc đó."),
+            ("IN06", "Lương thử việc bằng 85% mức lương của công việc đó."),
+            ("IN10", "Hợp đồng điện tử luôn có giá trị như hợp đồng bằng văn bản."),
+        ]
+        for case_id, text in failures:
+            with self.subTest(case_id=case_id, answer=text):
+                with self.assertRaises(AssertionError):
+                    check_expected_content(case_id, text)
+
+    def test_live_benchmark_accepts_minimum_supported_contents(self):
+        check_expected_content("IN06", "Lương thử việc phải đạt tối thiểu 85 % mức lương của công việc đó.")
+        check_expected_content("IN10", "Theo khoản 1 Điều 14, hợp đồng điện tử có giá trị tương đương khi là thông điệp dữ liệu đáp ứng quy định pháp luật.")
 
 
 if __name__ == "__main__":

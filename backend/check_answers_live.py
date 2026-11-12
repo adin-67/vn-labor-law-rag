@@ -3,12 +3,26 @@
 from argparse import ArgumentParser
 import json
 from pathlib import Path
+import re
+import unicodedata
 from urllib.parse import quote
 
 import httpx
 
 
 CASES_PATH = Path(__file__).resolve().parents[1] / "data" / "eval" / "retrieval_cases.jsonl"
+
+
+def check_expected_content(case_id, answer):
+    """Check minimum content for these labeled cases; reviewers still assess meaning."""
+    text = " ".join(unicodedata.normalize("NFC", answer).casefold().split())
+    assert not ("nghị định" in text and "45/2019/qh14" in text), "The answer misidentifies the Labor Code as a decree."
+    if case_id == "IN06":
+        assert re.search(r"85\s*%|tám mươi lăm phần trăm", text), "The answer omits the 85% threshold."
+        assert "ít nhất" in text or "tối thiểu" in text, "The answer omits that the threshold is a minimum."
+        assert "lương" in text and ("công việc" in text or "vị trí" in text), "The wage comparison basis is missing."
+    if case_id == "IN10":
+        assert "thông điệp dữ liệu" in text, "The condition concerning a data message is missing."
 
 
 def main():
@@ -41,10 +55,13 @@ def main():
             if args.case and case_id != args.case:
                 continue
             try:
+                print(f"\n{case_id} | {queries[case_id]}")
                 response = client.post("/api/v1/answer", json={"query": queries[case_id]})
+                if response.is_error:
+                    print(f"HTTP {response.status_code}")
+                    print(response.text)
                 response.raise_for_status()
                 result = response.json()
-                print(f"\n{case_id} | {queries[case_id]}")
                 print(json.dumps(result, ensure_ascii=False, indent=2))
                 assert result["snapshot_id"] == snapshot, "The data snapshot changed during evaluation."
                 assert isinstance(result["answer"], str) and result["answer"].strip(), "The answer is empty."
@@ -53,6 +70,7 @@ def main():
                     assert result["citations"] == [], "An abstention contains citations."
                 else:
                     assert result["status"] == "answered", "An answerable question was rejected."
+                    check_expected_content(case_id, result["answer"])
                     citations = result["citations"]
                     assert any(row["article"] == article for row in citations), "The expected source is missing."
                     expected_source = next(row for row in citations if row["article"] == article)

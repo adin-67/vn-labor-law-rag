@@ -28,7 +28,13 @@ def check_expected_content(case_id, answer):
 def main():
     parser = ArgumentParser()
     parser.add_argument("--api-base-url", default="http://127.0.0.1:8001")
-    parser.add_argument("--case", choices=["IN06", "IN10", "OUT01", "OUT05", "OUT06"])
+    parser.add_argument(
+        "--case",
+        choices=[
+            "IN06", "IN10", "OUT01", "OUT05", "OUT06",
+            "NEW01", "NEW02", "NEW03", "NEW04", "NEW05",
+        ],
+    )
     args = parser.parse_args()
     queries = {}
     for line in CASES_PATH.read_text(encoding="utf-8").splitlines():
@@ -36,12 +42,25 @@ def main():
             case = json.loads(line)
             queries[case["id"]] = case["query"]
     queries["OUT06"] = "Tôi đã qua thử việc, hiện làm theo hợp đồng lao động 12 tháng. Nếu tự xin nghỉ thì phải báo trước mấy ngày?"
+    queries.update({
+        "NEW01": "Hai bên có thể ghi thỏa thuận thử việc ngay trong hợp đồng lao động được không?",
+        "NEW02": "Thử việc không đạt yêu cầu thì hợp đồng đã ký được xử lý thế nào?",
+        "NEW03": "Với cùng một công việc, công ty có thể yêu cầu tôi thử việc hai lần không?",
+        "NEW04": "Tiền lương làm thêm giờ vào ngày nghỉ lễ được tính bao nhiêu phần trăm?",
+        "NEW05": "Tỷ lệ đóng bảo hiểm xã hội bắt buộc hằng tháng của người lao động là bao nhiêu?",
+    })
+
     expected = {
         "IN06": ("26", (12, 12)),
         "IN10": ("14", (7, 7)),
         "OUT01": (None, None),
         "OUT05": (None, None),
         "OUT06": (None, None),
+        "NEW01": ("24", (11, 11)),
+        "NEW02": ("27", (12, 12)),
+        "NEW03": ("25", (11, 12)),
+        "NEW04": (None, None),
+        "NEW05": (None, None),
     }
     failures = 0
     with httpx.Client(base_url=args.api_base_url.rstrip("/"), timeout=300, trust_env=False) as client:

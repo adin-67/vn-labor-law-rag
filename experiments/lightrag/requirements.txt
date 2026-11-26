@@ -1,0 +1,2 @@
+﻿lightrag-hku==1.5.7
+ollama>=0.5.4,<1

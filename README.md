@@ -2,6 +2,8 @@
 
 Xem [hướng dẫn thử endpoint answer với Ollama](docs/answer-ollama.md) để chạy câu trả lời kèm nguồn bằng model local.
 
+Xem [hướng dẫn thử LightRAG và BGE-M3](experiments/lightrag/README.md) để lập chỉ mục sáu điều luật và so sánh các chế độ truy xuất trên máy.
+
 Bản demo tìm kiếm bằng BM25 trên Điều 24–27 của Bộ luật Lao động số 45/2019/QH14.
 
 ## Chạy thử
